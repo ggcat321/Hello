@@ -1,0 +1,45 @@
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+from sympy import *
+
+x = symbols('x')
+F = (1/(1 * np.sqrt(2 * np.pi))) * (exp(-(x)**2/(2)))
+
+np.random.seed()
+n = 100
+M = 1000
+mu = 0
+sigma = 1
+beta = []
+B_beta = []
+
+for j in [4,6,8]:
+    for i in range(M):
+        u = np.random.normal(mu, sigma, n)  #Normal亂數u
+        u_r = np.power(u ,j)
+        
+        moment01 = float(integrate((x**j)*F,(x,-oo,oo)))  #動差 = E(u^r)
+        moment02 = float(integrate((x**(2*j))*F,(x,-oo,oo)))  #動差 = E(u^2r)
+           
+        e=[]
+        e=(u_r-moment01)/math.sqrt(moment02-(moment01)**2)
+        b=np.mean(e)*np.sqrt(n)
+        beta.append(b)
+    B_beta.append(beta)
+    beta=[]
+
+u_1 = np.random.normal(mu, sigma, 1000)
+r_4 = np.asarray(B_beta[0])
+r_6 = np.asarray(B_beta[1])
+r_8 = np.asarray(B_beta[2])
+bins = np.linspace(-4, 4, 100)
+plt.hist(u_1, bins, histtype='step', stacked=False, fill=True, alpha=0.75, label="r_1")
+plt.hist(r_4, bins, histtype='step', stacked=False, fill=True, alpha=0.4, label="r_4")
+plt.hist(r_6, bins, histtype='step', stacked=False, fill=True, alpha=0.4, label="r_6")
+plt.hist(r_8, bins, histtype='step', stacked=False, fill=True, alpha=0.4, label="r_8")
+plt.title("Monte-Carlo Simulation")
+plt.legend()
+plt.show()
+
+
