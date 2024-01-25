@@ -16,11 +16,11 @@ B_beta = []
 
 for j in [4,6,8]:
     for i in range(M):
-        u = np.random.normal(mu, sigma, n)  #Normal亂數u
+        u = np.random.normal(mu, sigma, n)  #Normal Random Numbers u
         u_r = np.power(u ,j)
         
-        moment01 = float(integrate((x**j)*F,(x,-oo,oo)))  #動差 = E(u^r)
-        moment02 = float(integrate((x**(2*j))*F,(x,-oo,oo)))  #動差 = E(u^2r)
+        moment01 = float(integrate((x**j)*F,(x,-oo,oo)))  #Moments = E(u^r)
+        moment02 = float(integrate((x**(2*j))*F,(x,-oo,oo)))  #Moments = E(u^2r)
            
         e=[]
         e=(u_r-moment01)/math.sqrt(moment02-(moment01)**2)
